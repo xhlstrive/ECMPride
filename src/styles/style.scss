@@ -1,0 +1,75 @@
+//css reset
+$bg_color: #ffffff;
+$border_color: #ddd;
+$font_color: #333333;
+body {
+  margin: 0;
+}
+table.gridtable {
+  font-family: verdana,arial,sans-serif;
+  font-size:11px;
+  color:$font_color;
+  border-width: 1px;
+  border-color: $border_color;
+  border-collapse: collapse;
+  text-align: center;
+  width: 80%;
+}
+table.gridtable thead tr td {
+  font-weight: bold;
+  border-bottom: 2px solid $border_color;
+}
+table.gridtable th {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: $border_color;
+  background-color: #dedede;
+}
+table.gridtable td {
+  border-width: 1px;
+  padding: 8px;
+  border-style: solid;
+  border-color: $border_color;
+  background-color: $bg_color;
+}
+.table-page {
+  margin-top: 5px;
+}
+.mt34 {
+  margin-top: 62px;
+}
+.loadcss {
+  font-size: 32px !important;
+}
+.pagination {
+  float: right;
+  margin-top: 10px;
+}
+.mt10 {
+  margin-top: 10px;
+}
+.mb10 {
+  margin-bottom: 10px;
+}
+.mt20 {
+  margin-top: 20px;
+}
+.mt50 {
+  margin-top: 50px;
+}
+.pointer {
+  cursor: pointer;
+}
+.floatLeft {
+  float: left;
+}
+.el-button--mini.is-circle {
+  padding: 5px;
+}
+.mr20 {
+  margin-right: 10px;
+}
+.el-menu-item.is-active {
+  background: #ecf5ff !important;
+}
