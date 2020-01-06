@@ -8,7 +8,7 @@
 export default {
   name: 'App',
   mounted () {
-    console.log(process.env)
+    // console.log(process.env)
   }
 }
 </script>
@@ -16,6 +16,7 @@ export default {
 <style lang="scss">
 $font-color1: #24292e;
 $font-color2: #303133;
+$font-color3: #4c4f56;
 html, body {
   height: 100%;
   // overflow: hidden;
@@ -48,6 +49,7 @@ body {
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FAFAFA), color-stop(100%,#E9E9E9));
     border-bottom: 1px solid #ddd;
     padding: 7px 15px;
+    height: 40px;
   }
   .el-card__body {
     padding: 0px 15px;
@@ -55,13 +57,13 @@ body {
   // 表格中 thead 背景色
   .el-table thead {
     // color: #24292e;
-    color: $font-color2;
+    color: $font-color3;
     th {
       background: #f5f7fa;
     }
   }
   .el-table td, .el-table th {
-    padding: 6px 0;
+    padding: 3px 0;
   }
   .el-table .cell, .el-table th div {
     padding-right: 6px;
@@ -69,7 +71,7 @@ body {
   // 表格中文字居中
   .el-table .cell, .el-table th div, .el-table--border td:first-child .cell, .el-table--border th:first-child .cell {
     // padding-left: 6px;
-    text-align: center;
+    // text-align: center;
   }
   .el-divider--horizontal {
     margin: 10px 0;

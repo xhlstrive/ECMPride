@@ -2,6 +2,7 @@
 $bg_color: #ffffff;
 $border_color: #ddd;
 $font_color: #333333;
+$main_color: #0071bc;
 body {
   margin: 0;
 }
@@ -46,8 +47,14 @@ table.gridtable td {
   float: right;
   margin-top: 10px;
 }
+.mt5 {
+  margin-top: 5px;
+}
 .mt10 {
   margin-top: 10px;
+}
+.mb5 {
+  margin-bottom: 5px;
 }
 .mb10 {
   margin-bottom: 10px;
@@ -57,6 +64,9 @@ table.gridtable td {
 }
 .mt50 {
   margin-top: 50px;
+}
+.mr5 {
+  margin-right: 5px;
 }
 .pointer {
   cursor: pointer;
@@ -72,4 +82,259 @@ table.gridtable td {
 }
 .el-menu-item.is-active {
   background: #ecf5ff !important;
+}
+.el-input-group__prepend div.el-select .el-input__inner {
+  color: $font_color;
+}
+.el-tooltip__popper {
+  max-width: 400px
+}
+//重置页面button颜色
+.el-button--primary {
+  background-color: $main_color;
+  border-color: $main_color;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: $main_color;
+}
+.el-link.el-link--primary {
+  color: $main_color;
+}
+.el-link.el-link--primary :hover {
+  color: $main_color;
+}
+.el-radio-button__orig-radio:checked+.el-radio-button__inner {
+  background-color: $main_color;
+  border-color: $main_color;
+}
+.el-tag {
+  color: $main_color;
+}
+.el-input-group__append {
+  background-color: #0071bc;
+  color: $bg_color;
+  border: 1px solid #0071bc;
+}
+a {
+  color: $font_color;
+}
+a:hover {
+  color: $main_color;
+}
+.textCenter {
+  text-align: center;
+}
+.el-tag.el-tag--danger {
+  color: #ec3f3f;
+}
+// svg Man 中的透明度设置
+.UBERON_0000956 {
+  stroke: none;
+  opacity: -0.0119965;
+}
+.UBERON_0000955 {
+  stroke: none;
+  opacity: 0.157845;
+}
+.UBERON_0000948 {
+  stroke: none;
+  opacity: 0.430613;
+}
+.UBERON_0000310 {
+  stroke: none;
+  opacity: 0.39354;
+}
+.UBERON_0002369 {
+  stroke: none;
+  opacity: 0.198171;
+}
+.UBERON_0000029 {
+  stroke: none;
+  opacity: 0.415668;
+}
+.UBERON_0002371 {
+  stroke: none;
+  opacity: -0.262175;
+}
+.UBERON_0001013 {
+  stroke: none;
+  opacity: 0.388021;
+}
+.UBERON_0001134 {
+  stroke: none;
+  opacity: 0.273027;
+}
+.UBERON_0000178 {
+  stroke: none;
+  opacity: 0.0108521;
+}
+.UBERON_0002421 {
+  stroke: none;
+  opacity: -0.0406114;
+}
+.UBERON_0001000 {
+  stroke: none;
+  opacity: 0.361381;
+}
+.UBERON_0000998 {
+  stroke: none;
+  opacity: 0.346653;
+}
+.UBERON_0000473 {
+  stroke: none;
+  opacity: 0.432414;
+}
+.UBERON_0001301 {
+  stroke: none;
+  opacity: 0.485193;
+}
+.UBERON_0000970 {
+  stroke: none;
+  opacity: 0.252681;
+}
+.UBERON_0000966 {
+  stroke: none;
+  opacity: 0.252681;
+}
+.UBERON_0002372 {
+  stroke: none;
+  opacity: 0.246318;
+}
+.UBERON_0001728 {
+  stroke: none;
+  opacity: 0;
+}
+.UBERON_0002048 {
+  stroke: none;
+  opacity: 0.334052;
+}
+.UBERON_0002240 {
+  stroke: none;
+  opacity: 0.0298731;
+}
+.UBERON_0001876 {
+  stroke: none;
+  opacity: -0.0406114;
+}
+.UBERON_0002185 {
+  stroke: none;
+  opacity: 0;
+}
+.UBERON_0002107 {
+  stroke: none;
+  opacity: 0.173758;
+}
+.UBERON_0000945 {
+  stroke: none;
+  opacity: 0.308342;
+}
+.UBERON_0002106 {
+  stroke: none;
+  opacity: 0.29802;
+}
+.UBERON_0002114 {
+  stroke: none;
+  opacity: 0.125089;
+}
+.UBERON_0002110 {
+  stroke: none;
+  opacity: 0.535512;
+}
+.UBERON_0001264 {
+  stroke: none;
+  opacity: 0.26773;
+}
+.UBERON_0001155 {
+  stroke: none;
+  opacity: 0.369649;
+}
+.UBERON_0002108 {
+  stroke: none;
+  opacity: 0.268809;
+}
+.UBERON_0001135 {
+  stroke: none;
+  opacity: 0.509795;
+}
+.UBERON_0001255 {
+  stroke: none;
+  opacity: 0.47926;
+}
+.UBERON_0002367 {
+  stroke: none;
+  opacity: 0.392819;
+}
+.UBERON_0002037 {
+  stroke: none;
+  opacity: -0.0581632;
+}
+.UBERON_0002113 {
+  stroke: none;
+  opacity: 0.229419;
+}
+.UBERON_0001043 {
+  stroke: none;
+  opacity: 0.325241;
+}
+.UBERON_0002046 {
+  stroke: none;
+  opacity: 0.216576;
+}
+.UBERON_0001044 {
+  stroke: none;
+  opacity: 0.251437;
+}
+.UBERON_0000014 {
+  stroke: none;
+  opacity: 0.406431;
+}
+/* woman */
+.UBERON_0000992 {
+  stroke: none;
+  opacity: 0.489449;
+}
+.UBERON_0001987 {
+  stroke: none;
+  opacity: 0.511209;
+}
+.UBERON_0001295 {
+  stroke: none;
+  opacity: 0.546804;
+}
+.UBERON_0003889 {
+  stroke: none;
+  opacity: 0.398116;
+}
+.UBERON_0000002 {
+  stroke: none;
+  opacity: 0.686578;
+}
+.UBERON_0000996 {
+  stroke: none;
+  opacity: 0.444742;
+}
+.UBERON_0000007 {
+  stroke: none;
+  opacity: 0.269879;
+}
+.UBERON_0001052 {
+  stroke: none;
+  opacity: 0.157845;
+}
+.UBERON_0001723 {
+  opacity: 0.312075;
+}
+.UBERON_0001736 {
+  stroke: none;
+  opacity: 0.216576;
+}
+.svgColor1 {
+  fill: rgb(251, 10, 10);
+}
+.svgColor2 {
+  fill:rgb(217, 0, 0);
+}
+.addColor {
+  fill: rgb(0, 113, 188);
+  opacity: 1;
 }

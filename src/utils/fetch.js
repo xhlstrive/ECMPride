@@ -1,34 +1,39 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
-import store from '../store'
-import businessErrorHandler from './businessErrorHandler'
+// import store from '../store'
+// import businessErrorHandler from './businessErrorHandler'
 // import businessErrorHandler from './businessErrorHandler'
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API // api的base_url
-  // timeout: 15000
+  baseURL: process.env.BASE_API, // api的base_url
+  timeout: 15000
 })
 // request拦截器
 service.interceptors.request.use(config => {
-  if (store.getters.token) {
-    config.headers['pSessionId'] = store.getters.token // 让每个请求携带自定义token 请根据实际情况自行修改
-  }
+  // if (store.getters.token) {
+  //   config.headers['pSessionId'] = store.getters.token // 让每个请求携带自定义token 请根据实际情况自行修改
+  // }
   return config
 }, error => {
   return Promise.reject(error)
 })
-
 // respone拦截器
 service.interceptors.response.use(
   response => {
     // console.log(response)
-    const res = response.data
-    if (res.status === 'success' || response.status === 200) {
-      return response.data
-    } else {
-      return businessErrorHandler(res)
-    }
-    // return response.data
+    // const res = response.data
+    // if (res.status === 'success' || response.status === 200) {
+    //   return response.data
+    // } else {
+    //   return businessErrorHandler(res)
+    // }
+    let res = response.data
+    // if (res.status !== '10000') {
+    //   return businessErrorHandler(res)
+    // } else {
+    //   return response.data
+    // }
+    return res
   },
   error => {
     if (error && error.response) {

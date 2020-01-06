@@ -35,20 +35,26 @@ export default {
   },
   created () {
     this.allRoutes = constantRouterMap
-    console.log(this.allRoutes)
-    if (sessionStorage.getItem('activeIndex')) {
-      this.activeIndex = sessionStorage.getItem('activeIndex')
-    } else {
-      this.activeIndex = '/home'
-    }
-    window.addEventListener('beforeunload', () => {
-      sessionStorage.setItem('activeIndex', this.activeIndex)
-    })
+    // sessionStorage.setItem('activeIndex', this.$route.path.split('/index')[0])
+    this.activeIndex = this.$route.meta.layout
+    // if (sessionStorage.getItem('activeIndex')) {
+    //   this.activeIndex = sessionStorage.getItem('activeIndex')
+    // } else {
+    //   this.activeIndex = this.$route.path.split('/index')[0]
+    // }
+    // window.addEventListener('beforeunload', () => {
+    //   sessionStorage.setItem('activeIndex', this.activeIndex)
+    // })
   },
   methods: {
     handleSelect (key, keyPath) {
-      console.log(keyPath)
+      // console.log(keyPath)
       this.activeIndex = key
+    }
+  },
+  watch: {
+    '$route.path': function (v) {
+      this.activeIndex = this.$route.meta.layout
     }
   }
 }

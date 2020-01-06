@@ -1,9 +1,9 @@
 import fetch from 'utils/fetch'
 // 1级菜单
-export function getOrganism (data) {
+export function getSearchList (data) {
   return fetch({
-    url: '/odas/experiment/meta/organism',
-    method: 'get',
+    url: '/getProteinInfo',
+    method: 'post',
     params: data
   })
 }

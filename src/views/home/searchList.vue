@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
 import Breadcrumb from 'components/Breadcrumb/index'
 export default {
   name: 'app_searchList',
@@ -79,10 +80,22 @@ export default {
       }]
     }
   },
+  computed: {
+    ...mapGetters([
+      'searchList'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'getSearchList'
+    ]),
     handleResult (row, column, event) {
       this.$router.push({path: '/home/searchResult'})
     }
+  },
+  created () {
+    console.log(this.getSearchList())
+    console.log(this.$route.query.keyWords)
   }
 }
 </script>

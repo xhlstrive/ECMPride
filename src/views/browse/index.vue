@@ -4,6 +4,7 @@
     <el-row class="mt20">
       <el-table
         :data="tableData"
+        stripe
         border
         style="width: 100%">
         <el-table-column
@@ -11,10 +12,27 @@
           width="55">
         </el-table-column>
         <el-table-column
-          prop="uniprotid"
           label="UniProt ID"
           sortable
           width="180">
+          <template slot-scope="scope">
+            <el-link href="https://www.uniprot.org/uniprot/" target="_blank" type="primary">{{scope.row.uniprotid}}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="ecm"
+          label="Probability of ECM"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          prop="ecm"
+          label="Protein name"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          prop="ecm"
+          label="Gene name"
+          sortable>
         </el-table-column>
         <el-table-column
           prop="ecm"
@@ -24,7 +42,7 @@
         <el-table-column
           label="Download"
           width="100">
-          <template slot-scope="scope">
+          <template>
             <el-button type="primary" icon="el-icon-download" size="mini" plain circle></el-button>
           </template>
         </el-table-column>
@@ -36,7 +54,7 @@
         :total="1000"
         class="pagination">
       </el-pagination>
-      <el-button type="primary" size="mini" icon="el-icon-download" class="mt10 floatLeft">批量下载</el-button>
+      <el-button type="primary" size="mini" icon="el-icon-download" class="mt10 floatLeft">Batch Download</el-button>
     </el-row>
   </el-row>
 </template>

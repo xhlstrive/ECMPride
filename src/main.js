@@ -9,9 +9,12 @@ import './styles/style.scss'
 import 'font-awesome/css/font-awesome.css'
 import './styles/sliderbar.scss'
 import i18n from 'lang'
+import 'icons'
 import './permission'
+import animate from 'animate.css'
 import './mock'
 Vue.config.productionTip = false
+Vue.use(animate)
 Vue.use(Element, {
   i18n: (key, value) => i18n.t(key, value)
 })

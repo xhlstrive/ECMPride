@@ -25,23 +25,23 @@ export default {
       linkList: [
         {
           title: 'Matrisome',
-          url: ''
+          url: 'http://pepchem.org:35088/'
         },
         {
           title: 'MatrixDB',
-          url: ''
+          url: 'http://matrixdb.univ-lyon1.fr/'
         },
         {
           title: 'ExoCarta',
-          url: ''
+          url: 'http://exocarta.org/index.html'
         },
         {
           title: 'GO',
-          url: ''
+          url: 'http://amigo.geneontology.org/amigo/landing'
         },
         {
           title: 'UniProt',
-          url: ''
+          url: 'https://www.uniprot.org/'
         }
       ],
       isActive: -1
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss">
-$min_color: #1b82d1;
+$min_color: #0071bc;/* #1b82d1 */
 #app_relatedDatabase {
   .contents {
     a {

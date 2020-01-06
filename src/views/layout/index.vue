@@ -7,15 +7,6 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <!-- <el-header>
-      <Navbar></Navbar>
-    </el-header>
-    <el-main>
-      <router-view></router-view>
-    </el-main> -->
-    <!-- <el-footer style="height:30px;">
-      <Footer></Footer>
-    </el-footer> -->
   </el-container>
 </template>
 
@@ -33,7 +24,7 @@ export default {
 
 <style lang="scss">
 $bg_color: #ffffff;
-$min_color: #1b82d1;
+$min_color: #225390; /* #1b82d1 */
  #app_layout {
    height: 100%;
    .el-header {

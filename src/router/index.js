@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '../views/layout'
+import Home from '../views/home'
 const _import = require('./_import_' + process.env.NODE_ENV)
 Vue.use(Router)
 
 export const constantRouterMap = [
   {
     path: '/',
-    component: Layout,
+    component: Home,
     name: 'apphome',
     redirect: '/home/index',
     hidden: true,
@@ -15,13 +16,14 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('home/index'),
-        name: 'home'
+        name: 'home',
+        meta: {layout: '/home'}
       }
     ]
   },
   {
     path: '/home',
-    component: Layout,
+    component: Home,
     name: 'home',
     redirect: '/home/index',
     meta: {icon: 'el-icon-s-home', title: 'Home', noCache: false},
@@ -30,19 +32,54 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('home/index'),
-        name: 'home'
-      },
+        name: 'home',
+        meta: {layout: '/home'}
+      }
+      // {
+      //   path: 'searchResult',
+      //   component: Layout,
+      //   redirect: '/home/searchResult',
+      //   name: 'searchResult',
+      //   meta: {icon: 'el-icon-s-home', title: 'searchResult', noCache: false}
+      // },
+      // {
+      //   path: 'searchList',
+      //   component: Layout,
+      //   redirect: '/home/searchList',
+      //   name: 'searchList',
+      //   meta: {icon: 'el-icon-s-home', title: 'searchList', noCache: false}
+      // }
+    ]
+  },
+  {
+    path: 'searchList',
+    component: Layout,
+    name: 'appSearchList',
+    redirect: '/home/searchList',
+    meta: {icon: 'el-icon-s-home', title: 'searchList', noCache: false},
+    hidden: true,
+    children: [
       {
-        path: 'searchResult',
-        component: () => import('@/views/home/searchResult'),
-        name: 'searchResult',
-        meta: {icon: 'el-icon-s-home', title: 'searchResult', noCache: false}
-      },
-      {
-        path: 'searchList',
-        component: () => import('@/views/home/searchList'),
+        path: '/home/searchList',
+        component: _import('home/searchList'),
         name: 'searchList',
-        meta: {icon: 'el-icon-s-home', title: 'searchList', noCache: false}
+        meta: {layout: '/home'}
+      }
+    ]
+  },
+  {
+    path: 'searchResult',
+    component: Layout,
+    name: 'appSearchResult',
+    redirect: '/home/searchResult',
+    meta: {icon: 'el-icon-s-home', title: 'searchResult', noCache: false},
+    hidden: true,
+    children: [
+      {
+        path: '/home/searchResult',
+        component: _import('home/searchResult'),
+        name: 'searchResult',
+        meta: {layout: '/home'}
       }
     ]
   },
@@ -85,7 +122,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('statistics/index'),
-        name: 'Statistics'
+        name: 'Statistics',
+        meta: {layout: '/statistics'}
       }
     ]
   },
@@ -100,7 +138,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('browse/index'),
-        name: 'Browse'
+        name: 'Browse',
+        meta: {layout: '/browse'}
       }
     ]
   },
@@ -115,7 +154,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('downloads/index'),
-        name: 'Downloads'
+        name: 'Downloads',
+        meta: {layout: '/downloads'}
       }
     ]
   },
@@ -130,7 +170,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('userManual/index'),
-        name: 'User Manual'
+        name: 'User Manual',
+        meta: {layout: '/userManual'}
       }
     ]
   },
@@ -145,7 +186,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('contacts/index'),
-        name: 'Contacts'
+        name: 'Contacts',
+        meta: {layout: '/contacts'}
       }
     ]
   },
@@ -160,7 +202,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('expCollaboration/index'),
-        name: 'Experimental Collaboration'
+        name: 'Experimental Collaboration',
+        meta: {layout: '/expCollaboration'}
       }
     ]
   },
@@ -175,7 +218,8 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: _import('relatedDatabase/index'),
-        name: 'Related Database'
+        name: 'Related Database',
+        meta: {layout: '/relatedDatabase'}
       }
     ]
   }

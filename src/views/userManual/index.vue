@@ -63,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss">
-$font-color: #1b82d1;
+$font-color: #0071bc;
 #app_userManual {
   .el-collapse-item__header {
     color: $font-color;

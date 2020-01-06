@@ -45,6 +45,7 @@ module.exports = {
       'lang': resolve('src/lang'),
       'api': resolve('src/api'),
       'utils': resolve('src/utils'),
+      'icons': resolve('src/icons'),
       'mock': resolve('src/mock')
     }
   },
@@ -62,8 +63,17 @@ module.exports = {
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
+        include: [resolve('src/icons')],
+        options: {
+          symbolId: 'icon-[name]'
+        }
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
+        exclude: [resolve('src/icons')],
         options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
