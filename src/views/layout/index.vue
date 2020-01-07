@@ -1,7 +1,7 @@
 <template>
   <el-container id="app_layout">
     <el-header style="height: 50px;">ECMPride</el-header>
-    <el-container>
+    <el-container style="height: 500px;">
       <Navbar></Navbar>
       <el-main>
         <router-view></router-view>

@@ -108,6 +108,13 @@
       <div class="text_item">
         <div class="contents mt20 mb10">
           <el-row>
+            <el-alert
+              title="Click toolbar to show the tissue"
+              type="info"
+              show-icon>
+            </el-alert>
+          </el-row>
+          <el-row class="mt10">
             <el-radio-group v-model="ranExpression.ranSortType" size="mini" class="radioGroup" @change="handleRanSort">
               <el-radio-button label="Organ"></el-radio-button>
               <el-radio-button label="Expression"></el-radio-button>
