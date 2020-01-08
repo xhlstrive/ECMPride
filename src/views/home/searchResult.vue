@@ -109,7 +109,7 @@
         <div class="contents mt20 mb10">
           <el-row>
             <el-alert
-              title="Click toolbar to show the tissue"
+              title="Mouseover toolbar to show the tissue"
               type="info"
               show-icon>
             </el-alert>
@@ -401,9 +401,9 @@ export default {
         ]
       }
       this.profilBarChart.setOption(option)
-      this.profilBarChart.on('click', (params) => {
+      this.profilBarChart.on('mouseover', (params) => {
         this.svgData.selectType = params.name
-        console.log(params.name)
+        // console.log(params.name)
       })
     },
     isEmpty (val) {
@@ -502,6 +502,9 @@ $font_color2: #303133;
     .contents {
       .left_title {
         font-weight: 600;
+      }
+      .el-alert__title {
+        font-style: italic;
       }
     }
   }

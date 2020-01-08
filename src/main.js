@@ -13,6 +13,8 @@ import 'icons'
 import './permission'
 import animate from 'animate.css'
 import './mock'
+import vuescroll from 'vuescroll'
+
 Vue.config.productionTip = false
 Vue.use(animate)
 Vue.use(Element, {
@@ -23,6 +25,15 @@ Vue.directive('focus', {
     el.focus()
   }
 })
+
+// 你可以在这里设置全局配置
+Vue.use(vuescroll) // install the vuescroll first
+Vue.prototype.$vuescrollConfig = {
+  bar: {
+    background: '#000'
+  }
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

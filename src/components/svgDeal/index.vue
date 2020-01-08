@@ -67,7 +67,7 @@ export default {
   },
   watch: {
     'svgData.selectType': function (v) {
-      console.log(this.svgData.type)
+      // console.log(this.svgData.type)
       // 将组织名中的空格转化为下划线
       var idFormater = v.replace(/\ /g, '_')
       // 去掉其它组织的选中状态-去掉addColor
@@ -96,6 +96,9 @@ export default {
       // 去掉脑的选中状态-去掉addColor
       this.clearBrainAddColor()
     }
+    // document.querySelector(`.svgColor2`).on('mouseover', (params) => {
+    //   console.log(params)
+    // })
   }
 }
 </script>
