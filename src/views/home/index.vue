@@ -30,8 +30,11 @@
             <el-upload
               class="upload-demo"
               :action="actionApi + uploadUrl"
-              :on-change="handleChange"
+              :before-upload="handleBeforeUpload"
               :on-success="handleUploadSuccess"
+              :on-exceed="handleUploadExceed"
+              :on-error="handleError"
+              :on-remove="handleRemoveFile"
               :file-list="fileList"
               :limit="1"
               :data="ajax_Data_upload"
@@ -110,8 +113,49 @@ export default {
   created () {
   },
   methods: {
-    handleChange (file, fileList) {
-      this.fileList = fileList.slice(-3)
+    handleBeforeUpload (file) {
+      console.log(file)
+      // this.fileList = fileList.slice(-3)
+      const fname = file.name.split('.')
+      let reg = /[\u4e00-\u9fa5]/g
+      let isenName
+      if (reg.test(fname[0])) {
+        this.$message({
+          message: 'The filename must not be chinese!',
+          type: 'warning'
+        })
+        isenName = false
+        return isenName
+      } else {
+        isenName = true
+      }
+      const isTxt = file.type === 'text/plain'
+      if (!isTxt) {
+        this.$message({
+          message: 'The file type must be txt!',
+          type: 'warning'
+        })
+        return isenName && isTxt
+      }
+      const isLtkb = file.size / 1024 < 500
+      if (!isLtkb) {
+        this.$message({
+          message: 'The filesize must not overflow 4MB!',
+          type: 'warning'
+        })
+        return isLtkb && isenName && isTxt
+      }
+    },
+    handleError (err, file, fileList) {
+      console.log(err, file, fileList)
+      this.$message({
+        showClose: true,
+        message: 'Upload Error. Please Check The File',
+        type: 'error'
+      })
+    },
+    handleRemoveFile (file, fileList) {
+      console.log(file, fileList)
     },
     handleSearchType (val) {
       this.keyWords = ''
@@ -223,6 +267,10 @@ export default {
     handleUploadSearch () {
       console.log(this.uploadNum)
       this.$router.push({path: '/home/searchList'})
+    },
+    handleUploadExceed (files, fileList) {
+      // this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+      this.$message.warning(`Upload limit 1 file`)
     },
     ...mapActions([
       'getSearchList',
