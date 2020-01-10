@@ -14,23 +14,34 @@
           <i class="el-icon-d-arrow-right" />
         </template>
       </el-table-column>
+      <!-- <el-table-column
+        type="index"
+        width="50">
+      </el-table-column> -->
       <el-table-column
-        prop="uniprotid"
+        prop="uniprotId"
         label="UniProt ID"
         sortable
         width="180">
       </el-table-column>
       <el-table-column
-        prop="ecm"
-        label="Probability of ECM"
+        prop="geneName"
+        label="Gene Name"
+        sortable>
+      </el-table-column>
+      <el-table-column
+        prop="proteinNames"
+        label="Protein Name"
         sortable>
       </el-table-column>
     </el-table>
     <el-pagination
       background
       layout="total, prev, pager, next"
-      :total="1000"
+      :page-size="pageSize"
+      :total="allNum"
       small
+      @current-change="handleChangepage"
       class="pagination">
     </el-pagination>
   </el-row>
@@ -47,55 +58,49 @@ export default {
   data () {
     return {
       isShowheader: false,
-      tableData: [{
-        uniprotid: 'P13942',
-        ecm: '0.99'
-      }, {
-        uniprotid: 'P20908',
-        ecm: '0.56'
-      }, {
-        uniprotid: 'P25948',
-        ecm: '0.32'
-      }, {
-        uniprotid: 'P25940',
-        ecm: '0.14'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }, {
-        uniprotid: 'Q8TER0',
-        ecm: '0.789'
-      }]
+      tableData: [],
+      allNum: 0,
+      pageSize: 20,
+      pageNum: 1
     }
   },
   computed: {
     ...mapGetters([
-      'searchList'
+      'listData',
+      'searchType'
     ])
   },
   methods: {
     ...mapActions([
-      'getSearchList'
+      // 'getSearchList'
     ]),
     handleResult (row, column, event) {
-      this.$router.push({path: '/home/searchResult'})
+      console.log(row, column, event)
+      let searchType = this.searchType
+      let keyWords = row.uniprotId
+      // console.log(keyWords, searchType)
+      this.$router.push({path: '/home/searchResult', query: {keyWords: keyWords, searchType: searchType}})
+    },
+    handleChangepage (val) {
+      console.log(val, this.listData.listData)
+      this.tableData = this.listData.listData.slice((val - 1) * this.pageSize, val * this.pageSize)
     }
   },
   created () {
-    console.log(this.getSearchList())
-    console.log(this.$route.query.keyWords)
+    // console.log(this.getSearchList())
+    // this.tableData = this.listData.listData
+    if (this.listData.listData.length > 0) {
+      this.tableData = this.listData.listData.slice((this.pageNum - 1) * this.pageSize, this.pageNum * this.pageSize)
+      this.allNum = this.listData.count
+      console.log(this.listData)
+    } else {
+      this.$message({
+        showClose: true,
+        message: 'No Data',
+        center: true,
+        type: 'error'
+      })
+    }
   }
 }
 </script>

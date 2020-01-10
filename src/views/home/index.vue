@@ -1,10 +1,10 @@
 <template>
   <el-row id="app_home">
     <el-row class="intro">
-      <!-- <svg-icon icon-class="homepage-background" :customStyle="customStyle"/> -->
+      <!-- <svg-icon icon-class="homepage-background" :customStyle="customStyle" @keyup.enter.native="handleSearch"/> -->
       <div class="searchOuter mt20">
         <h3>ECMPride</h3>
-        <el-autocomplete :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable :placeholder="searchVal === 'uniprotid' ? 'Enter UniProt ID (eg: P02452) to search' : 'Enter Gene Name (eg: COL1A1) to search'" @focus="handleFocus" v-model="keyWords" class="input-with-select"  @keyup.enter.native="handleSearch">
+        <el-autocomplete :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable :placeholder="searchVal === 'uniprotId' ? 'Enter UniProt ID (eg: P02452) to search' : 'Enter Gene Name (eg: COL1A1) to search'" @focus="handleFocus" v-model="keyWords" class="input-with-select">
           <el-select v-model="searchVal" slot="prepend" placeholder="Please Select" @change="handleSearchType">
             <el-option
               v-for="item in searchType"
@@ -16,15 +16,31 @@
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-autocomplete>
         <div class="searchUpload mt20">
-          <el-upload
-            class="upload-demo"
-            action=""
-            :on-change="handleChange"
-            :file-list="fileList">
-            <el-button size="small" type="success">upload<i class="el-icon-upload el-icon--right"></i></el-button>
-            <el-button size="small" type="primary" icon="el-icon-search">search</el-button>
-            <div slot="tip" class="el-upload__tip">Only CSV files can be uploaded, no more than 500kb</div>
-          </el-upload>
+          <div class="searchLeft">
+            <el-select v-model="uploadTypeVal" placeholder="please selected" size="small">
+              <el-option
+                v-for="item in uploadType"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="searchRight">
+            <el-upload
+              class="upload-demo"
+              :action="actionApi + uploadUrl"
+              :on-change="handleChange"
+              :on-success="handleUploadSuccess"
+              :file-list="fileList"
+              :limit="1"
+              :data="ajax_Data_upload"
+              :auto-upload="true">
+              <el-button size="small" type="success">upload<i class="el-icon-upload el-icon--right"></i></el-button>
+              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch">search</el-button>
+              <div slot="tip" class="el-upload__tip">Only TXT files can be uploaded, no more than 500kb</div>
+            </el-upload>
+          </div>
         </div>
       </div>
     </el-row>
@@ -45,14 +61,23 @@ import svgIcon from 'components/svgIcons'// svg component
 export default {
   data () {
     return {
+      actionApi: process.env.BASE_API,
       searchType: [{
-        value: 'uniprotid',
+        value: 'uniprotId',
         label: 'UniProt ID'
       }, {
         value: 'genename',
         label: 'Gene Name'
       }],
-      searchVal: 'uniprotid',
+      searchVal: 'uniprotId',
+      uploadType: [{
+        value: 'uniprotId',
+        label: 'UniProt ID'
+      }, {
+        value: 'genename',
+        label: 'Gene Name'
+      }],
+      uploadTypeVal: 'uniprotId',
       keyWords: '',
       fileList: [],
       ajax_Data_general: {
@@ -68,7 +93,16 @@ export default {
         {title: 'Downloads', url: '/downloads', src: '/static/download.png'},
         {title: 'User Manual', url: '/userManual', src: '/static/usermanual.png'},
         {title: 'Contacts', url: '/contacts', src: '/static/contactsus.png'}
-      ]
+      ],
+      ajax_Data: {},
+      ajax_Data_gn: {},
+      timeout: null,
+      ajax_Data_upload: {
+        pageSize: 10000,
+        pageNum: 0
+      },
+      uploadUrl: '/getProteinListCountByFile',
+      uploadNum: 0
     }
   },
   computed: {
@@ -127,36 +161,81 @@ export default {
     },
     handleFocus () {
       let inputVal
-      this.searchVal === 'uniprotid' ? inputVal = 'P02452' : inputVal = 'COL1A1'
+      this.searchVal === 'uniprotId' ? inputVal = 'P02452' : inputVal = 'COL1A1'
       this.keyWords === '' ? this.keyWords = inputVal : this.keyWords = this.keyWords
-      // this.searchVal === 'uniprotid' ? this.keyWords = 'P02452' : this.keyWords = 'COL1A1'
+      // this.searchVal === 'uniprotId' ? this.keyWords = 'P02452' : this.keyWords = 'COL1A1'
     },
     querySearch (queryString, cb) {
-      var restaurants = this.restaurants
-      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-      // 调用 callback 返回建议列表的数据
-      cb(results)
+      console.log(queryString, cb)
+      console.log(queryString.length)
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        if (queryString.length >= 3) {
+          this.searchVal === 'uniprotId' ? this._queryFuzzyByUniprotid(queryString, cb) : this._queryFuzzyByGenename(queryString, cb)
+        } else {
+          this.$message({
+            showClose: true,
+            message: 'The keywords must longer than 3!',
+            center: true,
+            type: 'warning'
+          })
+        }
+      }, 2000 * Math.random())
     },
-    createFilter (queryString) {
-      return (restaurant) => {
-        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+    _queryFuzzyByUniprotid (queryString, cb) {
+      this.ajax_Data.brokenUniprotId = queryString
+      this.getFuzzyQueryOfUniprotId(this.ajax_Data).then((res) => {
+        let results = this.formaterVal(res)
+        cb(results)
+      })
+    },
+    _queryFuzzyByGenename (queryString, cb) {
+      this.ajax_Data_gn.brokenGeneName = queryString
+      this.getFuzzyQueryOfGeneName(this.ajax_Data_gn).then((res) => {
+        let results = this.formaterVal(res)
+        cb(results)
+      })
+    },
+    formaterVal (val) {
+      let newArr = []
+      val.map(item => {
+        newArr.push({
+          value: item
+        })
+      })
+      return newArr
+    },
+    handleUploadSuccess (response, file, fileList) {
+      console.log(response, file, fileList)
+      this.uploadNum = response.count
+      if (response.count > 0) {
+        this.setListData(response)
+        this.setSearchType(this.searchVal)
+      } else {
+        this.$message({
+          showClose: true,
+          message: 'No Data',
+          center: true,
+          type: 'error'
+        })
       }
     },
-    loadAll () {
-      return [
-        { 'value': 'Q9NZU1', 'address': 'FLRT1 UNQ752/PRO1483' },
-        { 'value': 'P56199', 'address': 'ITGA1' }
-      ]
+    handleUploadSearch () {
+      console.log(this.uploadNum)
+      this.$router.push({path: '/home/searchList'})
     },
     ...mapActions([
-      'getSearchList'
+      'getSearchList',
+      'getFuzzyQueryOfUniprotId',
+      'getFuzzyQueryOfGeneName',
+      'setListData',
+      'setSearchType'
     ])
   },
   components: {
     svgIcon
   },
   mounted () {
-    this.restaurants = this.loadAll()
   }
 }
 </script>
@@ -201,6 +280,13 @@ $hover_color: #409eff;
       font-size: 52px;
       margin-bottom: 30px;
     }
+    .searchUpload {
+      display: flex;
+      margin-left: calc(50% - 15em);
+      .searchLeft, .searchRight {
+        float: left;
+      }
+    }
   }
   .menuOuter {
     text-align: center;
@@ -213,6 +299,12 @@ $hover_color: #409eff;
   }
   .input-with-select .el-input-group__prepend {
     background-color: $bg_color;
+  }
+  .el-upload-list__item-name, .el-upload-list__item-name [class^=el-icon], .el-upload-list__item .el-icon-close {
+    color: #ffffff;
+  }
+  .el-upload-list :hover {
+    background: #0071bc;
   }
 }
 </style>

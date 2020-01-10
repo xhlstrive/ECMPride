@@ -480,7 +480,7 @@ export default {
           center: true,
           type: 'error'
         })
-        this.$router.push({path: '/home'})
+        // this.$router.push({path: '/home'})
       }
     })
   }

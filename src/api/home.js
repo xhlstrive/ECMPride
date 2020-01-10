@@ -1,9 +1,16 @@
 import fetch from 'utils/fetch'
 // 1级菜单
-export function getSearchList (data) {
+export function getFuzzyQueryOfUniprotId (data) {
   return fetch({
-    url: '/getProteinInfo',
+    url: `/getFuzzyQueryOfUniprotId`,
     method: 'post',
-    params: data
+    data
+  })
+}
+export function getFuzzyQueryOfGeneName (data) {
+  return fetch({
+    url: `/getFuzzyQueryOfGeneName`,
+    method: 'post',
+    data
   })
 }
