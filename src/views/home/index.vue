@@ -17,7 +17,7 @@
         </el-autocomplete>
         <div class="searchUpload mt20">
           <div class="searchLeft">
-            <el-select v-model="uploadTypeVal" placeholder="please selected" size="small">
+            <el-select v-model="uploadTypeVal" placeholder="please selected" size="small" @change="handleUploadType">
               <el-option
                 v-for="item in uploadType"
                 :key="item.value"
@@ -40,7 +40,7 @@
               :data="ajax_Data_upload"
               :auto-upload="true">
               <el-button size="small" type="success">upload<i class="el-icon-upload el-icon--right"></i></el-button>
-              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch">search</el-button>
+              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch" :disabled="isDisabled">search</el-button>
               <div slot="tip" class="el-upload__tip">Only TXT files can be uploaded, no more than 500kb</div>
             </el-upload>
           </div>
@@ -101,11 +101,12 @@ export default {
       ajax_Data_gn: {},
       timeout: null,
       ajax_Data_upload: {
-        pageSize: 10000,
-        pageNum: 0
+        // pageSize: 10000,
+        // pageNum: 0
       },
-      uploadUrl: '/getProteinListCountByFile',
-      uploadNum: 0
+      uploadUrl: '/getProteinListByUploadFile',
+      uploadNum: 0,
+      isDisabled: false
     }
   },
   computed: {
@@ -113,50 +114,6 @@ export default {
   created () {
   },
   methods: {
-    handleBeforeUpload (file) {
-      console.log(file)
-      // this.fileList = fileList.slice(-3)
-      const fname = file.name.split('.')
-      let reg = /[\u4e00-\u9fa5]/g
-      let isenName
-      if (reg.test(fname[0])) {
-        this.$message({
-          message: 'The filename must not be chinese!',
-          type: 'warning'
-        })
-        isenName = false
-        return isenName
-      } else {
-        isenName = true
-      }
-      const isTxt = file.type === 'text/plain'
-      if (!isTxt) {
-        this.$message({
-          message: 'The file type must be txt!',
-          type: 'warning'
-        })
-        return isenName && isTxt
-      }
-      const isLtkb = file.size / 1024 < 500
-      if (!isLtkb) {
-        this.$message({
-          message: 'The filesize must not overflow 4MB!',
-          type: 'warning'
-        })
-        return isLtkb && isenName && isTxt
-      }
-    },
-    handleError (err, file, fileList) {
-      console.log(err, file, fileList)
-      this.$message({
-        showClose: true,
-        message: 'Upload Error. Please Check The File',
-        type: 'error'
-      })
-    },
-    handleRemoveFile (file, fileList) {
-      console.log(file, fileList)
-    },
     handleSearchType (val) {
       this.keyWords = ''
     },
@@ -249,12 +206,67 @@ export default {
       })
       return newArr
     },
+    handleUploadType (val) {
+      // console.log(val)
+      if (val === 'genename') {
+        this.uploadUrl = '/getProteinListByUploadGeneName'
+      } else {
+        this.uploadUrl = '/getProteinListByUploadFile'
+      }
+    },
+    handleBeforeUpload (file) {
+      // console.log(file)
+      // this.fileList = fileList.slice(-3)
+      const fname = file.name.split('.')
+      let reg = /[\u4e00-\u9fa5]/g
+      let isenName
+      if (reg.test(fname[0])) {
+        this.$message({
+          message: 'The filename must not be chinese!',
+          type: 'warning'
+        })
+        isenName = false
+        return isenName
+      } else {
+        isenName = true
+      }
+      const isTxt = file.type === 'text/plain'
+      if (!isTxt) {
+        this.$message({
+          message: 'The file type must be txt!',
+          type: 'warning'
+        })
+        return isenName && isTxt
+      }
+      const isLtkb = file.size / 1024 < 500
+      if (!isLtkb) {
+        this.$message({
+          message: 'The filesize must not overflow 4MB!',
+          type: 'warning'
+        })
+        return isLtkb && isenName && isTxt
+      }
+    },
+    handleError (err, file, fileList) {
+      console.log(err, file, fileList)
+      this.$message({
+        showClose: true,
+        message: 'Upload Error. Please Check The File',
+        type: 'error'
+      })
+      this.isDisabled = true
+    },
+    handleRemoveFile (file, fileList) {
+      // console.log(file, fileList)
+      this.isDisabled = false
+    },
     handleUploadSuccess (response, file, fileList) {
-      console.log(response, file, fileList)
+      // console.log(response, file, fileList)
       this.uploadNum = response.count
       if (response.count > 0) {
         this.setListData(response)
         this.setSearchType(this.searchVal)
+        this.isDisabled = false
       } else {
         this.$message({
           showClose: true,
@@ -262,10 +274,11 @@ export default {
           center: true,
           type: 'error'
         })
+        this.isDisabled = true
       }
     },
     handleUploadSearch () {
-      console.log(this.uploadNum)
+      // console.log(this.uploadNum)
       this.$router.push({path: '/home/searchList'})
     },
     handleUploadExceed (files, fileList) {

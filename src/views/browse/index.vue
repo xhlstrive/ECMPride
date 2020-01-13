@@ -35,11 +35,6 @@
           sortable>
         </el-table-column>
         <el-table-column
-          prop="ecm"
-          label="Probability of ECM"
-          sortable>
-        </el-table-column>
-        <el-table-column
           label="Download"
           width="100">
           <template>
