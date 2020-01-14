@@ -1,10 +1,10 @@
 <template>
   <el-row id="app_home">
     <el-row class="intro">
-      <!-- <svg-icon icon-class="homepage-background" :customStyle="customStyle" @keyup.enter.native="handleSearch"/> -->
+      <!-- <svg-icon icon-class="homepage-background" :customStyle="customStyle"/> -->
       <div class="searchOuter mt20">
         <h3>ECMPride</h3>
-        <el-autocomplete :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable :placeholder="searchVal === 'uniprotId' ? 'Enter UniProt ID (eg: P02452) to search' : 'Enter Gene Name (eg: COL1A1) to search'" @focus="handleFocus" v-model="keyWords" class="input-with-select">
+        <el-autocomplete :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable :placeholder="searchVal === 'uniprotId' ? 'Enter UniProt ID (eg: P02452) to search' : 'Enter Gene Name (eg: COL1A1) to search'" @focus="handleFocus" @keyup.enter.native="handleSearch" v-model="keyWords" class="input-with-select">
           <el-select v-model="searchVal" slot="prepend" placeholder="Please Select" @change="handleSearchType">
             <el-option
               v-for="item in searchType"
@@ -39,8 +39,8 @@
               :limit="1"
               :data="ajax_Data_upload"
               :auto-upload="true">
-              <el-button size="small" type="success">upload<i class="el-icon-upload el-icon--right"></i></el-button>
-              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch" :disabled="isDisabled">search</el-button>
+              <el-button size="small" type="success">Upload<i class="el-icon-upload el-icon--right"></i></el-button>
+              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch" :disabled="isDisabled">Search</el-button>
               <div slot="tip" class="el-upload__tip">Only TXT files can be uploaded, no more than 500kb</div>
             </el-upload>
           </div>

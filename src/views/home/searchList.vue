@@ -4,13 +4,13 @@
     <el-table
       :data="tableData"
       :show-header="isShowheader"
-      @row-click="handleResult"
-      class="mt20 pointer"
+      :highlight-current-row="isHighLight"
+      class="mt20 tableData"
       style="width: 100%;">
       <el-table-column
         label="img"
         width="50">
-        <template slot-scope="scope">
+        <template>
           <i class="el-icon-d-arrow-right" />
         </template>
       </el-table-column>
@@ -23,6 +23,9 @@
         label="UniProt ID"
         sortable
         width="180">
+        <template slot-scope="scope">
+          <router-link :to="{path: linkUrl, query:{keyWords: scope.row.uniprotId, searchType: searchType}}">{{scope.row.uniprotId}}</router-link>
+        </template>
       </el-table-column>
       <el-table-column
         prop="geneName"
@@ -61,7 +64,9 @@ export default {
       tableData: [],
       allNum: 0,
       pageSize: 20,
-      pageNum: 1
+      pageNum: 1,
+      linkUrl: '/home/searchResult',
+      isHighLight: true
     }
   },
   computed: {
@@ -75,14 +80,14 @@ export default {
       // 'getSearchList'
     ]),
     handleResult (row, column, event) {
-      console.log(row, column, event)
+      // console.log(row, column, event)
       let searchType = this.searchType
       let keyWords = row.uniprotId
       // console.log(keyWords, searchType)
       this.$router.push({path: '/home/searchResult', query: {keyWords: keyWords, searchType: searchType}})
     },
     handleChangepage (val) {
-      console.log(val, this.listData.listData)
+      // console.log(val, this.listData.listData)
       this.tableData = this.listData.listData.slice((val - 1) * this.pageSize, val * this.pageSize)
     }
   },
@@ -92,7 +97,7 @@ export default {
     if (this.listData.listData.length > 0) {
       this.tableData = this.listData.listData.slice((this.pageNum - 1) * this.pageSize, this.pageNum * this.pageSize)
       this.allNum = this.listData.count
-      console.log(this.listData)
+      // console.log(this.listData)
     } else {
       this.$message({
         showClose: true,
@@ -109,6 +114,11 @@ export default {
 #app_searchList {
   .icon-color {
     color: #1b82d1;
+  }
+  .tableData {
+    a {
+      color: #1b82d1;
+    }
   }
 }
 </style>

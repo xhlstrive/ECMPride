@@ -4,12 +4,14 @@ import getters from './getter'
 import app from './modules/app'
 import home from './modules/home'
 import searchResult from './modules/searchResult'
+import browse from './modules/browse'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     app,
     home,
-    searchResult
+    searchResult,
+    browse
   },
   getters
 })

@@ -3,6 +3,7 @@
     <el-col :span="24" class="outer">
       <el-menu
         :default-active="activeIndex"
+        :collapse="isCollapse"
         class="el-menu-vertical-demo"
         text-color="#000"
         active-text-color="#1b82d1"
@@ -30,7 +31,8 @@ export default {
   data () {
     return {
       allRoutes: [],
-      activeIndex: '/home'
+      activeIndex: '/home',
+      isCollapse: false
     }
   },
   created () {

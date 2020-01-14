@@ -34,3 +34,18 @@ export function getTissueDistribution (data) {
     data
   })
 }
+/* browse 接口 */
+export function getProteinListCount (data) {
+  return fetch({
+    url: `/getProteinListCount`,
+    method: 'post',
+    data
+  })
+}
+export function getProteinListData (data) {
+  return fetch({
+    url: `/getProteinListData`,
+    method: 'post',
+    data
+  })
+}
