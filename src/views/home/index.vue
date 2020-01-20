@@ -380,7 +380,8 @@ $hover_color: #409eff;
     }
     .searchUpload {
       display: flex;
-      margin-left: calc(50% - 15em);
+      // margin-left: calc(50% - 15em);
+      justify-content: center;
       // .searchLeft {
       //   margin-right: 12px;
       // }
