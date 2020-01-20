@@ -1,4 +1,4 @@
-import {getFuzzyQueryOfUniprotId, getFuzzyQueryOfGeneName} from 'api/home'
+import {getFuzzyQueryOfUniprotId, getFuzzyQueryOfGeneName, destroyFilterFile} from 'api/home'
 const home = {
   state: {
     listData: [],
@@ -28,6 +28,16 @@ const home = {
         getFuzzyQueryOfGeneName(data).then((res) => {
           // commit('SET_SEARCHLIST', res.proteinInfo)
           resolve(res.result)
+        }).catch((error) => {
+          console.log(error)
+        })
+      })
+    },
+    destroyFilterFile ({commit, state}, data) {
+      return new Promise((resolve, reject) => {
+        destroyFilterFile(data).then((res) => {
+          // commit('SET_SEARCHLIST', res.proteinInfo)
+          resolve(res)
         }).catch((error) => {
           console.log(error)
         })

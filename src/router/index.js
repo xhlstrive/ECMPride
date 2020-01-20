@@ -116,13 +116,13 @@ export const constantRouterMap = [
     component: Layout,
     name: 'appStatistics',
     redirect: '/statistics/index',
-    meta: {icon: 'el-icon-s-data', title: 'Statistics', noCache: false},
+    meta: {icon: 'el-icon-s-data', title: 'About ECMPrideDB', noCache: false},
     hidden: false,
     children: [
       {
         path: 'index',
         component: _import('statistics/index'),
-        name: 'Statistics',
+        name: 'About ECMPrideDB',
         meta: {layout: '/statistics'}
       }
     ]
@@ -132,7 +132,7 @@ export const constantRouterMap = [
     component: Layout,
     name: 'appBrowse',
     redirect: '/browse/index',
-    meta: {icon: 'el-icon-document', title: 'Browse', noCache: false},
+    meta: {icon: 'el-icon-tickets', title: 'Browse', noCache: false},
     hidden: false,
     children: [
       {
@@ -164,7 +164,7 @@ export const constantRouterMap = [
     component: Layout,
     name: 'appUserManual',
     redirect: '/userManual/index',
-    meta: {icon: 'el-icon-tickets', title: 'User Manual', noCache: false},
+    meta: {icon: 'el-icon-document', title: 'User Manual', noCache: false},
     hidden: false,
     children: [
       {

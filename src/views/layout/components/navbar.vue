@@ -6,7 +6,7 @@
         :collapse="isCollapse"
         class="el-menu-vertical-demo"
         text-color="#000"
-        active-text-color="#1b82d1"
+        active-text-color="#0071bc"
         @select="handleSelect"
         style="height: 100%">
         <template v-for="item in allRoutes">

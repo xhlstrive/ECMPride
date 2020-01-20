@@ -49,3 +49,10 @@ export function getProteinListData (data) {
     data
   })
 }
+export function downloadProteinData (data) {
+  return fetch({
+    url: `/downloadProteinData`,
+    method: 'post',
+    data
+  })
+}

@@ -14,3 +14,10 @@ export function getFuzzyQueryOfGeneName (data) {
     data
   })
 }
+export function destroyFilterFile (data) {
+  return fetch({
+    url: `/destroyFilterFile`,
+    method: 'post',
+    data
+  })
+}

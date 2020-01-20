@@ -3,7 +3,8 @@
     <el-row class="intro">
       <!-- <svg-icon icon-class="homepage-background" :customStyle="customStyle"/> -->
       <div class="searchOuter mt20">
-        <h3>ECMPride</h3>
+        <h3>ECMPrideDB</h3>
+        <h4>The reference database of human extracellular matrix predicted by ECMPride</h4>
         <el-autocomplete :fetch-suggestions="querySearch" :trigger-on-focus="false" clearable :placeholder="searchVal === 'uniprotId' ? 'Enter UniProt ID (eg: P02452) to search' : 'Enter Gene Name (eg: COL1A1) to search'" @focus="handleFocus" @keyup.enter.native="handleSearch" v-model="keyWords" class="input-with-select">
           <el-select v-model="searchVal" slot="prepend" placeholder="Please Select" @change="handleSearchType">
             <el-option
@@ -26,7 +27,7 @@
               </el-option>
             </el-select>
           </div>
-          <div class="searchRight">
+          <div class="searchCenter">
             <el-upload
               class="upload-demo"
               :action="actionApi + uploadUrl"
@@ -40,15 +41,18 @@
               :data="ajax_Data_upload"
               :auto-upload="true">
               <el-button size="small" type="success">Upload<i class="el-icon-upload el-icon--right"></i></el-button>
-              <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch" :disabled="isDisabled">Search</el-button>
-              <div slot="tip" class="el-upload__tip">Only TXT files can be uploaded, no more than 500kb</div>
+              <!-- <div slot="tip" class="el-upload__tip">Only *.TXT files can be uploaded (ID is separated by Carriage return), and size do not exceed 500 kb</div> -->
             </el-upload>
           </div>
+          <div class="searchRight">
+            <el-button size="small" type="primary" icon="el-icon-search" @click="handleUploadSearch" :disabled="isDisabled">Search</el-button>
+          </div>
         </div>
+        <div slot="tip" class="el-upload__tip">Only *.TXT files can be uploaded (ID is separated by Carriage return), and the size does not exceed 500 kb</div>
       </div>
     </el-row>
     <el-row class="menuOuter mt50">
-      <el-col :span="6" v-for="(item, index) in menuList" :key="index">
+      <el-col :span="4" v-for="(item, index) in menuList" :key="index" style="margin-left: 20px;margin-right: 20px;">
           <router-link :to="item.url"><img :src="item.src" alt="" :style="customStyle"></router-link>
           <h3><router-link :to="item.url">{{item.title}}</router-link></h3>
       </el-col>
@@ -92,7 +96,8 @@ export default {
         height: '150px'
       },
       menuList: [
-        {title: 'Statistics', url: '/statistics', src: '/static/statistics.png'},
+        {title: 'About ECMPrideDB', url: '/statistics', src: '/static/statistics.png'},
+        {title: 'Browse', url: '/browse', src: '/static/browse.png'},
         {title: 'Downloads', url: '/downloads', src: '/static/download.png'},
         {title: 'User Manual', url: '/userManual', src: '/static/usermanual.png'},
         {title: 'Contacts', url: '/contacts', src: '/static/contactsus.png'}
@@ -101,17 +106,24 @@ export default {
       ajax_Data_gn: {},
       timeout: null,
       ajax_Data_upload: {
-        // pageSize: 10000,
-        // pageNum: 0
+        // proteinIdToken: ''
       },
-      uploadUrl: '/getProteinListByUploadFile',
+      uploadUrl: '/uploadFilterFile',
+      tokenid: '',
       uploadNum: 0,
-      isDisabled: false
+      isDisabled: true,
+      ajax_Data_destory: {
+        token: ''
+      }
     }
   },
   computed: {
   },
   created () {
+    // console.log(localStorage.getItem('tokenid'))
+    // // 随机产生一个32位数
+    // this.ajax_Data_upload.proteinIdToken = this.getNum()
+    // console.log(this.ajax_Data_upload)
   },
   methods: {
     handleSearchType (val) {
@@ -208,43 +220,43 @@ export default {
     },
     handleUploadType (val) {
       // console.log(val)
-      if (val === 'genename') {
-        this.uploadUrl = '/getProteinListByUploadGeneName'
-      } else {
-        this.uploadUrl = '/getProteinListByUploadFile'
-      }
+      // if (val === 'genename') {
+      //   this.uploadUrl = '/getProteinListByUploadGeneName'
+      // } else {
+      //   this.uploadUrl = '/getProteinListByUploadFile'
+      // }
     },
     handleBeforeUpload (file) {
       // console.log(file)
       // this.fileList = fileList.slice(-3)
-      const fname = file.name.split('.')
-      let reg = /[\u4e00-\u9fa5]/g
-      let isenName
-      if (reg.test(fname[0])) {
-        this.$message({
-          message: 'The filename must not be chinese!',
-          type: 'warning'
-        })
-        isenName = false
-        return isenName
-      } else {
-        isenName = true
-      }
+      // const fname = file.name.split('.')
+      // let reg = /[\u4e00-\u9fa5]/g
+      // let isenName
+      // if (reg.test(fname[0])) {
+      //   this.$message({
+      //     message: 'The filename must not be chinese!',
+      //     type: 'warning'
+      //   })
+      //   isenName = false
+      //   return isenName
+      // } else {
+      //   isenName = true
+      // }
       const isTxt = file.type === 'text/plain'
       if (!isTxt) {
         this.$message({
           message: 'The file type must be txt!',
           type: 'warning'
         })
-        return isenName && isTxt
+        return isTxt
       }
       const isLtkb = file.size / 1024 < 500
       if (!isLtkb) {
         this.$message({
-          message: 'The filesize must not overflow 4MB!',
+          message: 'The filesize must not overflow 500kB!',
           type: 'warning'
         })
-        return isLtkb && isenName && isTxt
+        return isLtkb && isTxt
       }
     },
     handleError (err, file, fileList) {
@@ -261,34 +273,54 @@ export default {
       this.isDisabled = false
     },
     handleUploadSuccess (response, file, fileList) {
-      // console.log(response, file, fileList)
-      this.uploadNum = response.count
-      if (response.count > 0) {
-        this.setListData(response)
-        this.setSearchType(this.searchVal)
-        this.isDisabled = false
-      } else {
-        this.$message({
-          showClose: true,
-          message: 'No Data',
-          center: true,
-          type: 'error'
-        })
-        this.isDisabled = true
+      console.log(response, file, fileList)
+      console.log(localStorage.getItem('tokenid'))
+      if (localStorage.getItem('tokenid') !== '') {
+        this.ajax_Data_destory.token = localStorage.getItem('tokenid')
+        this.destroyFilterFile(this.ajax_Data_destory)
       }
+      this.tokenid = response.token
+      localStorage.setItem('tokenid', this.tokenid)
+      this.setSearchType(this.uploadTypeVal)
+      this.isDisabled = false
+      // this.uploadNum = response.count
+      // if (response.count > 0) {
+      //   this.setListData(response)
+      //   this.setSearchType(this.searchVal)
+      //   this.isDisabled = false
+      // } else {
+      //   this.$message({
+      //     showClose: true,
+      //     message: 'No Data',
+      //     center: true,
+      //     type: 'error'
+      //   })
+      //   this.isDisabled = true
+      // }
     },
     handleUploadSearch () {
       // console.log(this.uploadNum)
-      this.$router.push({path: '/home/searchList'})
+      this.$router.push({path: '/home/searchList', query: {tokenid: this.tokenid}})
+      // this.$router.push({path: '/home/searchList'})
     },
     handleUploadExceed (files, fileList) {
       // this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
       this.$message.warning(`Upload limit 1 file`)
     },
+    getNum () {
+      var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+      var nums = ''
+      for (var i = 0; i < 32; i++) {
+        var id = parseInt(Math.random() * 61)
+        nums += chars[id]
+      }
+      return nums
+    },
     ...mapActions([
       'getSearchList',
       'getFuzzyQueryOfUniprotId',
       'getFuzzyQueryOfGeneName',
+      'destroyFilterFile',
       'setListData',
       'setSearchType'
     ])
@@ -339,18 +371,29 @@ $hover_color: #409eff;
     }
     h3 {
       font-size: 52px;
-      margin-bottom: 30px;
+      // margin-bottom: 30px;
+    }
+    h4 {
+      margin-top: 0;
+      font-size: 18px;
+      font-weight: normal;
     }
     .searchUpload {
       display: flex;
       margin-left: calc(50% - 15em);
-      .searchLeft, .searchRight {
+      // .searchLeft {
+      //   margin-right: 12px;
+      // }
+      .searchLeft, .searchCenter {
         float: left;
+        margin-right: 12px;
       }
     }
   }
   .menuOuter {
     text-align: center;
+    display: flex;
+    justify-content: center;
     // .linkStyle {
     //   color: $font_color;
     // }

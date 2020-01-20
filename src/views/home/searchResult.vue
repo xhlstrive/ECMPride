@@ -14,7 +14,7 @@
         </h3>
         <div class="contents">
           <ul>
-            <li><span class="left_title">Protein type:</span> {{predictionResult.proteinType === true ? 'ECM' : 'nonECM'}}</li>
+            <li><span class="left_title">Prediction of ECMPride:</span> {{predictionResult.proteinType === true ? 'ECM' : 'nonECM'}}</li>
             <li><span class="left_title">Probability:</span> {{predictionResult.probability * 100}}%</li>
             <li><span class="left_title">Protein name:</span> {{predictionResult.officialName === null ? '-' : predictionResult.officialName}}</li>
             <li><span class="left_title">Gene name:</span> {{predictionResult.geneName}}</li>
@@ -122,7 +122,7 @@
             </el-radio-group>
           </el-row>
           <el-row>
-            <el-col :span="5">
+            <el-col :span="4">
               <el-row>
                 <svgDeal :svgData="svgData"></svgDeal>
                 <!-- <svg-icon icon-class="man" :customStyle="customStyle" v-if="ranExpression.genderType === 'man'"/>
@@ -313,7 +313,7 @@ export default {
             data: titleArr,
             axisLabel: {
               interval: 0,
-              rotate: 40
+              rotate: 57
             },
             margin: 2
             // data : function(){

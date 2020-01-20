@@ -68,8 +68,20 @@ table.gridtable td {
 .mr5 {
   margin-right: 5px;
 }
+.mr10 {
+  margin-right: 10px;
+}
 .pointer {
   cursor: pointer;
+}
+.fontColor {
+  color: #0071bc;
+}
+.fontItalic {
+  font-style: italic;
+}
+.fontWeight {
+  font-weight: 600;
 }
 .floatLeft {
   float: left;
@@ -79,6 +91,11 @@ table.gridtable td {
 }
 .mr20 {
   margin-right: 10px;
+}
+.el-button--primary:focus, .el-button--primary:hover {
+  background: #1b82d1;
+  border-color: #1b82d1;
+  color: #FFF;
 }
 .el-menu-item.is-active {
   background: #ecf5ff !important;

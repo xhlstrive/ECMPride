@@ -1,4 +1,4 @@
-import {getProteinListCount, getProteinListData} from 'api/api'
+import {getProteinListCount, getProteinListData, downloadProteinData} from 'api/api'
 const home = {
   state: {
   },
@@ -20,6 +20,16 @@ const home = {
         getProteinListData(data).then((res) => {
           // commit('SET_SEARCHLIST', res.proteinInfo)
           resolve(res.list)
+        }).catch((error) => {
+          console.log(error)
+        })
+      })
+    },
+    downloadProteinData ({commit, state}, data) {
+      return new Promise((resolve, reject) => {
+        downloadProteinData(data).then((res) => {
+          // commit('SET_SEARCHLIST', res.proteinInfo)
+          resolve(res)
         }).catch((error) => {
           console.log(error)
         })
